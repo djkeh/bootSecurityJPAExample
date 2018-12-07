@@ -1,0 +1,88 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.me'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-actuator')
+    implementation('org.springframework.boot:spring-boot-starter-data-rest')
+    implementation('org.springframework.data:spring-data-rest-hal-browser')
+    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+    implementation("com.querydsl:querydsl-core:4.2.1")
+    implementation("com.querydsl:querydsl-jpa:4.2.1")
+    implementation("com.querydsl:querydsl-collections:4.2.1")
+    runtimeOnly('org.springframework.boot:spring-boot-devtools')
+    runtimeOnly('com.h2database:h2')
+
+    // TODO: QueryDSL dependent syntax - generateQueryDSL task still require "compile" keyword which belongs to the older version of gradle.
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.projectlombok:lombok')
+    compile("com.querydsl:querydsl-apt:4.2.1")
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
+    testImplementation('org.springframework.security:spring-security-test')
+}
+
+
+def queryDslOutput = file("src-gen/main/java")
+
+sourceSets {
+    main {
+        java {
+            srcDir "src-gen/main/java"
+        }
+    }
+}
+
+clean {
+    delete queryDslOutput
+}
+
+task generateQueryDSL(type: JavaCompile, group: "build") {
+    doFirst {
+        if (!queryDslOutput.exists()) {
+            logger.info("Creating `$queryDslOutput` directory")
+
+            if (!queryDslOutput.mkdirs()) {
+                throw new InvalidUserDataException("Unable to create `$queryDslOutput` directory")
+            }
+        }
+    }
+
+    source = sourceSets.main.java
+    classpath = configurations.compile
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor",
+            "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = queryDslOutput
+}
+
+compileJava {
+    dependsOn generateQueryDSL
+    source generateQueryDSL.destinationDir
+}
