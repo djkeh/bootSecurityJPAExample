@@ -9,10 +9,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@DisplayName("SampleApplication basic tests")
 public class SampleApplicationTests {
 
     @Test
-    @DisplayName("Spring Boot 2 default context loading test")
+    @DisplayName("Context loading")
     public void contextLoads() {
     }
 
