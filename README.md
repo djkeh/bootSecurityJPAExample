@@ -1,6 +1,8 @@
 스프링 부트 웹 애플리케이션 예제
 ===
 
+[![Build Status](https://travis-ci.org/djkeh/bootSecurityJPAExample.svg?branch=master)](https://travis-ci.org/djkeh/bootSecurityJPAExample)
+
 자바 + 스프링 부트 2 웹 애플리케이션 예제 프로젝트입니다.
 
 ### 스펙
