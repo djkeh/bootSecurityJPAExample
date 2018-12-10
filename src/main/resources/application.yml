@@ -29,5 +29,5 @@ management:
 logging:
   level:
     root: info
-    com.me.sample: debug
+    com.me.bootSecurityJPAExample: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
