@@ -1,4 +1,4 @@
-package com.me.sample.config;
+package com.me.bootSecurityJPAExample.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

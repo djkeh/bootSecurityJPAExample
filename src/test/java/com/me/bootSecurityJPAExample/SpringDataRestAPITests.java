@@ -1,7 +1,7 @@
-package com.me.sample;
+package com.me.bootSecurityJPAExample;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.me.sample.domain.User;
+import com.me.bootSecurityJPAExample.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
