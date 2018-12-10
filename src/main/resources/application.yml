@@ -1,4 +1,6 @@
 spring:
+  datasource:
+    initialization-mode: embedded
   h2:
     console:
       enabled: true

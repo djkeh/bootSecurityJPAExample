@@ -26,12 +26,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDataRestAPITests {
 
     @Autowired private MockMvc mvc;
+    @Autowired private ObjectMapper mapper;
 
     @Test
     @DisplayName("[POST] Create a user")
     public void createUserTest() throws Exception {
         // Given
-        String body = "{\"something\": \"proper json\"}";
+        User user = User.builder()
+                .loginId("test")
+                .password("password")
+                .createdBy("creator")
+                .updatedBy("creator")
+                .build();
+        String body = mapper.writeValueAsString(user);
 
         // When & Then
         mvc.perform(post("/api/users").contentType(MediaType.APPLICATION_JSON).content(body))
