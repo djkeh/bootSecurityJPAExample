@@ -1,3 +1,6 @@
 language: java
+install: true
+jdk:
+  - oraclejdk8
 script:
-  - ./gradlew --scan --warning-mode=all
+  - ./gradlew clean build --scan --warning-mode=all --build-cache -s
