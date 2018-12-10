@@ -3,4 +3,4 @@ install: true
 jdk:
   - oraclejdk8
 script:
-  - ./gradlew clean build --scan --warning-mode=all --build-cache -s
+  - ./gradlew clean build --warning-mode=all --build-cache
