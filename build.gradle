@@ -39,6 +39,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.projectlombok:lombok')
+    annotationProcessor('org.projectlombok:lombok')
     compile("com.querydsl:querydsl-apt:4.2.1")
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
