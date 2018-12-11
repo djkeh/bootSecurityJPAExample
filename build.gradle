@@ -5,14 +5,15 @@ buildscript {
 }
 
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version "2.1.1.RELEASE"
+    id "java"
+    id "org.springframework.boot" version "2.1.1.RELEASE"
     id "io.spring.dependency-management" version "1.0.6.RELEASE"
-    id 'io.franzbecker.gradle-lombok' version '1.10'
+    id "io.franzbecker.gradle-lombok" version "1.10" // Deals with annotation processing (lombok)
+    id "net.ltgt.apt" version "0.19" // Deals with annotation processing (lombok)
 }
 
-group = 'com.me'
-version = '0.0.1-SNAPSHOT'
+group = "com.me"
+version = "0.0.1-SNAPSHOT"
 sourceCompatibility = 1.8
 
 repositories {
@@ -21,31 +22,31 @@ repositories {
 
 
 dependencies {
-    implementation('org.springframework.boot:spring-boot-starter-actuator')
-    implementation('org.springframework.boot:spring-boot-starter-data-rest')
-    implementation('org.springframework.data:spring-data-rest-hal-browser')
-    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-data-rest")
+    implementation("org.springframework.data:spring-data-rest-hal-browser")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("com.querydsl:querydsl-core:4.2.1")
     implementation("com.querydsl:querydsl-jpa:4.2.1")
     implementation("com.querydsl:querydsl-collections:4.2.1")
-    runtimeOnly('org.springframework.boot:spring-boot-devtools')
-    runtimeOnly('com.h2database:h2')
-    compileOnly('org.projectlombok:lombok')
-    annotationProcessor('org.projectlombok:lombok')
+    runtimeOnly("org.springframework.boot:spring-boot-devtools")
+    runtimeOnly("com.h2database:h2")
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
 
     // TODO: QueryDSL dependent syntax - generateQueryDSL task still require "compile" keyword which belongs to the older version of gradle.
-    compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("com.querydsl:querydsl-apt:4.2.1")
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
-    testImplementation('org.springframework.security:spring-security-test')
-    testImplementation('org.junit.jupiter:junit-jupiter-api')
-    testImplementation('org.junit.jupiter:junit-jupiter-engine')
-    testImplementation('org.junit.jupiter:junit-jupiter-params')
-    testImplementation('org.mockito:mockito-core')
-    testImplementation('org.mockito:mockito-junit-jupiter')
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.mockito:mockito-junit-jupiter")
 }
 
 
