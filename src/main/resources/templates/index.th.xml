@@ -2,5 +2,13 @@
 
 <thlogic>
   <attr sel="#th-navbar-brand" th:text="'Java + Spring Boot 2 + Security + JPA Example'" />
+  <attr sel="#th-table-body">
+    <attr sel="/tr[0]" th:each="user : ${users}">
+      <attr sel="td.number" th:text="${user.id}" />
+      <attr sel="td.login-id" th:text="${user.loginId}" />
+      <attr sel="td.nickname" th:text="${user.nickname}" />
+      <attr sel="td.email" th:text="${user.email}" />
+    </attr>
+  </attr>
   <attr sel="#th-contact" th:text="'Uno Kim (djkehh@gmail.com)'" />
 </thlogic>
