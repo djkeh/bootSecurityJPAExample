@@ -1,19 +1,15 @@
 buildscript {
-    ext {
-        springBootVersion = '2.1.1.RELEASE'
-    }
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "2.1.1.RELEASE"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+    id 'io.franzbecker.gradle-lombok' version '1.10'
+}
 
 group = 'com.me'
 version = '0.0.1-SNAPSHOT'
@@ -34,22 +30,22 @@ dependencies {
     implementation("com.querydsl:querydsl-collections:4.2.1")
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
     runtimeOnly('com.h2database:h2')
+    compileOnly('org.projectlombok:lombok')
+    annotationProcessor('org.projectlombok:lombok')
 
     // TODO: QueryDSL dependent syntax - generateQueryDSL task still require "compile" keyword which belongs to the older version of gradle.
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.projectlombok:lombok')
-    annotationProcessor('org.projectlombok:lombok')
     compile("com.querydsl:querydsl-apt:4.2.1")
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
     testImplementation('org.springframework.security:spring-security-test')
     testImplementation('org.junit.jupiter:junit-jupiter-api')
-    testRuntime('org.junit.jupiter:junit-jupiter-engine')
-    testCompile('org.junit.jupiter:junit-jupiter-params')
-    testCompile('org.mockito:mockito-core')
-    testCompile('org.mockito:mockito-junit-jupiter')
+    testImplementation('org.junit.jupiter:junit-jupiter-engine')
+    testImplementation('org.junit.jupiter:junit-jupiter-params')
+    testImplementation('org.mockito:mockito-core')
+    testImplementation('org.mockito:mockito-junit-jupiter')
 }
 
 
@@ -58,7 +54,7 @@ def queryDslOutput = file("src-gen/main/java")
 sourceSets {
     main {
         java {
-            srcDir "src-gen/main/java"
+            srcDir queryDslOutput
         }
     }
 }
@@ -83,7 +79,7 @@ task generateQueryDSL(type: JavaCompile, group: "build") {
     options.compilerArgs = [
             "-proc:only",
             "-processor",
-            "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+            'com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
     ]
     destinationDir = queryDslOutput
 }
