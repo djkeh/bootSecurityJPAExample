@@ -85,4 +85,5 @@ task generateQueryDSL(type: JavaCompile, group: "build") {
 compileJava {
     dependsOn generateQueryDSL
     source generateQueryDSL.destinationDir
+    options.compilerArgs = ["-proc:none"]
 }
