@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<thlogic>
+  <attr sel="#th-navbar-brand" th:text="'Java + Spring Boot 2 + Security + JPA Example'" />
+  <attr sel="#th-contact" th:text="'Uno Kim (djkehh@gmail.com)'" />
+</thlogic>

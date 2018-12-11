@@ -20,6 +20,9 @@ spring:
     rest:
       base-path: /api
       default-media-type: application/json
+  thymeleaf:
+    cache: false
+    decoupled-logic: true
 management:
   endpoints:
 #    TODO: Security vulnerable settings. Must be reviewed
