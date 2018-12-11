@@ -8,8 +8,6 @@ plugins {
     id "java"
     id "org.springframework.boot" version "2.1.1.RELEASE"
     id "io.spring.dependency-management" version "1.0.6.RELEASE"
-    id "io.franzbecker.gradle-lombok" version "1.10" // Deals with annotation processing (lombok)
-    id "net.ltgt.apt" version "0.19" // Deals with annotation processing (lombok)
 }
 
 group = "com.me"
@@ -20,25 +18,23 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.data:spring-data-rest-hal-browser")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("com.querydsl:querydsl-core:4.2.1")
     implementation("com.querydsl:querydsl-jpa:4.2.1")
     implementation("com.querydsl:querydsl-collections:4.2.1")
     runtimeOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")
     compileOnly('org.springframework.boot:spring-boot-configuration-processor')
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
 
-    // TODO: QueryDSL dependent syntax - generateQueryDSL task still require "compile" keyword which belongs to the older version of gradle.
+    // TODO: QueryDSL dependent syntax - The gradle task `generateQueryDSL` has trouble with AnnotationProcessor, there's no choice but to use gradle 4 keywords that are deprecated.
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("com.querydsl:querydsl-apt:4.2.1")
+    compile("org.projectlombok:lombok")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
