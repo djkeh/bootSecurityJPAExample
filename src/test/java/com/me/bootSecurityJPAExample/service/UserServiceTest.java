@@ -2,6 +2,7 @@ package com.me.bootSecurityJPAExample.service;
 
 import com.me.bootSecurityJPAExample.domain.User;
 import com.me.bootSecurityJPAExample.repository.UserRepository;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -25,8 +26,9 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 @DisplayName("User service logic tests")
 class UserServiceTest {
 
-    @Autowired UserService userService;
-    @Autowired UserRepository userRepository;
+    @Autowired private UserService userService;
+    @Autowired private UserRepository userRepository;
+    @Autowired private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void before() {
@@ -92,11 +94,34 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Check if the password encryption has done well")
+    void checkAddedUserPassword() {
+        // Given
+        String loginId = "test2";
+        String password = "password2";
+        User user = User.builder()
+                .loginId(loginId)
+                .password(password)
+                .createdBy("creator")
+                .updatedBy("creator")
+                .build();
+
+        // When
+        userService.addUser(user);
+        User result = userService.getUser(loginId);
+
+        // Then
+        assertThat(passwordEncoder.matches(password, result.getPassword())).isTrue();
+        assertThat(result.getPassword()).contains("{bcrypt}");
+
+    }
+
+    @Test
     @DisplayName("Add a User with a missing field")
     void addIncompleteUser() {
         // Given
         User user = User.builder()
-                .loginId("test2")
+                .password("password")
                 .createdBy("creator2")
                 .updatedBy("creator2")
                 .build();
@@ -107,7 +132,7 @@ class UserServiceTest {
         // Then
         assertThat(thrown)
                 .isInstanceOf(DataIntegrityViolationException.class)
-                .hasStackTraceContaining("PASSWORD");
+                .hasStackTraceContaining("LOGIN_ID");
     }
 
     @Test
@@ -120,8 +145,28 @@ class UserServiceTest {
 
         // Then
         assertThat(thrown)
-                .isInstanceOf(InvalidDataAccessApiUsageException.class)
-                .hasCauseExactlyInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("null");
+    }
+
+    @Test
+    @DisplayName("Add an existing user")
+    void addExistingUser() {
+        // Given
+        User user = User.builder()
+                .loginId("test")
+                .password("password")
+                .createdBy("creator")
+                .updatedBy("creator")
+                .build();
+
+        // When
+        Throwable thrown = catchThrowable(() -> userService.addUser(user));
+
+        // Then
+        assertThat(thrown)
+                .isInstanceOf(DataIntegrityViolationException.class)
+                .hasCauseExactlyInstanceOf(ConstraintViolationException.class)
+                .hasStackTraceContaining("Unique index or primary key violation");
     }
 }
