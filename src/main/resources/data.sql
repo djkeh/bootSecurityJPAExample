@@ -1,0 +1,1 @@
+insert into user (`login_id`, `password`, `nickname`, `email`, `description`, `created_at`, `created_by`, `updated_at`, `updated_by`) values ('test1', '{noop}password', 'nick1', 'email1@email.com', 'This is sample description.', '2018-12-01 00:00:00', 'uno', '2018-12-01 00:00:00', 'uno');

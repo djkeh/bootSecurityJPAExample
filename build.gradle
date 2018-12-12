@@ -1,0 +1,88 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "java"
+    id "org.springframework.boot" version "2.1.1.RELEASE"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+}
+
+group = "com.me"
+version = "0.0.1-SNAPSHOT"
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // TODO: QueryDSL dependent syntax - The gradle task `generateQueryDSL` has trouble with AnnotationProcessor, there's no choice but to use gradle 4 keywords that are deprecated.
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("com.querydsl:querydsl-apt:4.2.1")
+    compile("org.projectlombok:lombok")
+
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.data:spring-data-rest-hal-browser")
+    implementation("com.querydsl:querydsl-core:4.2.1")
+    implementation("com.querydsl:querydsl-jpa:4.2.1")
+    implementation("com.querydsl:querydsl-collections:4.2.1")
+    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.springframework.boot:spring-boot-devtools")
+    compileOnly('org.springframework.boot:spring-boot-configuration-processor')
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.mockito:mockito-junit-jupiter")
+}
+
+
+def queryDslOutput = file("src-gen/main/java")
+
+sourceSets {
+    main {
+        java {
+            srcDir queryDslOutput
+        }
+    }
+}
+
+clean {
+    delete queryDslOutput
+}
+
+task generateQueryDSL(type: JavaCompile, group: "build") {
+    doFirst {
+        if (!queryDslOutput.exists()) {
+            logger.info("Creating `$queryDslOutput` directory")
+
+            if (!queryDslOutput.mkdirs()) {
+                throw new InvalidUserDataException("Unable to create `$queryDslOutput` directory")
+            }
+        }
+    }
+
+    source = sourceSets.main.java
+    classpath = configurations.compile
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor",
+            'com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
+    ]
+    destinationDir = queryDslOutput
+}
+
+compileJava {
+    dependsOn generateQueryDSL
+    source generateQueryDSL.destinationDir
+}
