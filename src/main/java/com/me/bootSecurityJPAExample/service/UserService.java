@@ -25,6 +25,11 @@ public class UserService {
         return userRepository.findByLoginId(loginId);
     }
 
+    @Transactional(readOnly = true)
+    public boolean hasUser(String loginId) {
+        return userRepository.existsByLoginId(loginId);
+    }
+
     @Transactional
     public void addUser(User user) {
         userRepository.save(user);
