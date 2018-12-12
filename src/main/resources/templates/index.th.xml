@@ -2,13 +2,34 @@
 
 <thlogic>
   <attr sel="#th-navbar-brand" th:text="'Java + Spring Boot 2 + Security + JPA Example'" />
+  <attr sel="#th-navbar-button" th:text="'내 정보'" />
   <attr sel="#th-table-body">
     <attr sel="/tr[0]" th:each="user : ${users}">
-      <attr sel="td.number" th:text="${user.id}" />
+      <attr sel="th.number" th:text="${user.id}" />
       <attr sel="td.login-id" th:text="${user.loginId}" />
       <attr sel="td.nickname" th:text="${user.nickname}" />
       <attr sel="td.email" th:text="${user.email}" />
     </attr>
   </attr>
+
+  <attr sel="#th-form-button" th:text="'등록'" />
+  <attr sel="#th-form-modal-label" th:text="'사용자 등록'" />
+  <attr sel="#th-form-modal-login-id" th:text="'ID'" />
+  <attr sel="#th-form-modal-password" th:text="'암호'" />
+  <attr sel="#th-form-modal-nickname" th:text="'닉네임'" />
+  <attr sel="#th-form-modal-email" th:text="'이메일'" />
+  <attr sel="#th-form-modal-description" th:text="'설명'" />
+  <attr sel="#th-form-modal-footer-close" th:text="'닫기'" />
+  <attr sel="#th-form-modal-footer-submit" th:text="'확인'" />
+
+  <attr sel="#th-modal-label" th:text="'내 정보'" />
+  <attr sel="#th-modal-table-body">
+    <attr sel="/tr//td.login-id" th:text="${myAccount.loginId}" />
+    <attr sel="/tr//td.nickname" th:text="${myAccount.nickname}" />
+    <attr sel="/tr//td.email" th:text="${myAccount.email}" />
+    <attr sel="/tr//td.description" th:text="${myAccount.description}" />
+  </attr>
+  <attr sel="#th-modal-footer-button" th:text="'로그아웃'" />
+
   <attr sel="#th-contact" th:text="'Uno Kim (djkehh@gmail.com)'" />
 </thlogic>
