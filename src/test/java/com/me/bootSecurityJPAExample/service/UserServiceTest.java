@@ -9,12 +9,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 
 @ActiveProfiles("test")
@@ -99,10 +101,13 @@ class UserServiceTest {
                 .createdBy("creator2")
                 .build();
 
-        // When & Then
-        assertThatExceptionOfType(DataIntegrityViolationException.class)
-                .isThrownBy(() -> userService.addUser(user))
-                .withStackTraceContaining("UPDATED_BY");
+        // When
+        Throwable thrown = catchThrowable(() -> userService.addUser(user));
+
+        // Then
+        assertThat(thrown)
+                .isInstanceOf(DataIntegrityViolationException.class)
+                .hasStackTraceContaining("UPDATED_BY");
     }
 
     @Test
@@ -110,8 +115,13 @@ class UserServiceTest {
     void addNullUser() {
         // Given
 
-        // When & Then
-        assertThatThrownBy(() -> userService.addUser(null))
-                .hasRootCauseExactlyInstanceOf(IllegalArgumentException.class);
+        // When
+        Throwable thrown = catchThrowable(() -> userService.addUser(null));
+
+        // Then
+        assertThat(thrown)
+                .isInstanceOf(InvalidDataAccessApiUsageException.class)
+                .hasCauseExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("null");
     }
 }
