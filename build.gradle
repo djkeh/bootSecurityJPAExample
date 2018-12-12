@@ -32,8 +32,8 @@ dependencies {
     implementation("com.querydsl:querydsl-core:4.2.1")
     implementation("com.querydsl:querydsl-jpa:4.2.1")
     implementation("com.querydsl:querydsl-collections:4.2.1")
-    runtimeOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.springframework.boot:spring-boot-devtools")
     compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")

@@ -2,20 +2,19 @@ package com.me.bootSecurityJPAExample.service;
 
 import com.me.bootSecurityJPAExample.domain.User;
 import com.me.bootSecurityJPAExample.repository.UserRepository;
-import org.h2.jdbc.JdbcSQLException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 
 @ActiveProfiles("test")
@@ -101,9 +100,9 @@ class UserServiceTest {
                 .build();
 
         // When & Then
-        assertThatThrownBy(() -> userService.addUser(user))
-                .hasRootCauseExactlyInstanceOf(JdbcSQLException.class)
-                .hasStackTraceContaining("UPDATED_BY");
+        assertThatExceptionOfType(DataIntegrityViolationException.class)
+                .isThrownBy(() -> userService.addUser(user))
+                .withStackTraceContaining("UPDATED_BY");
     }
 
     @Test
