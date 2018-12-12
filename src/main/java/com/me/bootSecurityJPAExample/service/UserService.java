@@ -1,8 +1,12 @@
 package com.me.bootSecurityJPAExample.service;
 
+import com.me.bootSecurityJPAExample.domain.SecurityUser;
 import com.me.bootSecurityJPAExample.domain.User;
 import com.me.bootSecurityJPAExample.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -33,5 +37,12 @@ public class UserService {
     @Transactional
     public void addUser(User user) {
         userRepository.save(user);
+    }
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return new SecurityUser(userRepository.findByLoginId(username));
     }
 }
