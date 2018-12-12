@@ -97,8 +97,8 @@ class UserServiceTest {
         // Given
         User user = User.builder()
                 .loginId("test2")
-                .password("password2")
                 .createdBy("creator2")
+                .updatedBy("creator2")
                 .build();
 
         // When
@@ -107,7 +107,7 @@ class UserServiceTest {
         // Then
         assertThat(thrown)
                 .isInstanceOf(DataIntegrityViolationException.class)
-                .hasStackTraceContaining("UPDATED_BY");
+                .hasStackTraceContaining("PASSWORD");
     }
 
     @Test

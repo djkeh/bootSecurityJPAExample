@@ -12,11 +12,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @DisplayName("Boot, Security, JPA example application basic tests")
-public class BootSecurityJPAExampleApplicationTests {
+class BootSecurityJPAExampleApplicationTests {
 
     @Test
     @DisplayName("Context loading")
-    public void contextLoads() {
+    void contextLoads() {
     }
 
 }

@@ -2,18 +2,20 @@ package com.me.bootSecurityJPAExample;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.me.bootSecurityJPAExample.domain.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,17 +24,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc
-@Transactional
 @DisplayName("Spring Data Rest API Tests")
-public class SpringDataRestAPITests {
+class SpringDataRestAPITests {
 
-    @Autowired private MockMvc mvc;
+    @Autowired private WebApplicationContext context;
     @Autowired private ObjectMapper mapper;
+
+    private MockMvc mvc;
+
+    @BeforeEach
+    void before() {
+        mvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .apply(springSecurity())
+                .build();
+    }
 
     @Test
     @DisplayName("[POST] Create a user")
-    public void createUserTest() throws Exception {
+    void createUserTest() throws Exception {
         // Given
         User user = User.builder()
                 .loginId("test")
@@ -49,7 +59,7 @@ public class SpringDataRestAPITests {
 
     @Test
     @DisplayName("[GET] Get a user info.")
-    public void showUserTest() throws Exception {
+    void showUserTest() throws Exception {
         // Given
 
         // When & Then
@@ -59,7 +69,7 @@ public class SpringDataRestAPITests {
 
     @Test
     @DisplayName("[GET] Get an entire user list.")
-    public void showUsersTest() throws Exception {
+    void showUsersTest() throws Exception {
         // Given
 
         // When & Then
