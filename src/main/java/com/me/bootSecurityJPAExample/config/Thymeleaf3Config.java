@@ -1,7 +1,6 @@
 package com.me.bootSecurityJPAExample.config;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
@@ -12,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.ViewResolver;
 import org.thymeleaf.spring5.ISpringTemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -33,10 +33,13 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 public class Thymeleaf3Config implements ApplicationContextAware {
 
+    private final Thymeleaf3Properties properties;
+
     private ApplicationContext applicationContext = null;
 
-    @Autowired
-    private Thymeleaf3Properties properties;
+    public Thymeleaf3Config(@Lazy Thymeleaf3Properties properties) {
+        this.properties = properties;
+    }
 
     @Override
     public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
@@ -87,17 +90,14 @@ public class Thymeleaf3Config implements ApplicationContextAware {
     /**
      * <p>
      * Properties for Thymeleaf 3.
-     * </p>
      *
      * @see org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties
-     * @author Uno Kim
      */
     @ConfigurationProperties(prefix = "spring.thymeleaf")
     public class Thymeleaf3Properties extends ThymeleafProperties {
 
         /**
-         * Template mode to be applied to templates. Default value is {@code HTML} from
-         * Thymeleaf 3.
+         * Template mode to be applied to templates. Default value is {@code HTML} from Thymeleaf 3.
          */
         private String mode = TemplateMode.HTML.name();
 
