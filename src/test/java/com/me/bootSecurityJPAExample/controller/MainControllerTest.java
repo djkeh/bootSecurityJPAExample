@@ -72,6 +72,17 @@ class MainControllerTest {
     }
 
     @Test
+    @DisplayName("[GET] main view without authentication")
+    void mainWithoutLogin() throws Exception {
+        // Given
+
+        // When & Then
+        mvc.perform(get("/"))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/login"));
+    }
+
+    @Test
     @DisplayName("[POST] add a user")
     void formMain() throws Exception {
         // Given
@@ -97,5 +108,21 @@ class MainControllerTest {
         verify(userService).getList();
         verify(userService).getUser(any());
         verify(userService).addUser(any());
+    }
+
+    @Test
+    @DisplayName("[POST] add a user without authentication")
+    void formMainWithoutLogin() throws Exception {
+        // Given
+        User user = User.builder().build();
+        String body = mapper.writeValueAsString(user);
+
+        // When & Then
+        mvc.perform(
+                post("/")
+                        .content(body)
+        )
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/login"));
     }
 }
