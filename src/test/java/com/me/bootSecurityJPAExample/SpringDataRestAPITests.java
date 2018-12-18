@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @ActiveProfiles("test")
+@Transactional
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @DisplayName("Spring Data Rest API Tests")
@@ -47,13 +49,11 @@ class SpringDataRestAPITests {
                 .build();
     }
 
-    @AfterEach
-    void after() {
-        userRepository.deleteAll(); // TODO: failed to apply rollback transactions among Spring Data Rest test cases.
-    }
-
-
     @Nested
+    @ActiveProfiles("test")
+    @Transactional
+    @ExtendWith(SpringExtension.class)
+    @SpringBootTest
     @DisplayName("for basic CRUD APIs")
     class ForBasicAPIs {
         @Test
@@ -97,6 +97,10 @@ class SpringDataRestAPITests {
 
 
     @Nested
+    @ActiveProfiles("test")
+    @Transactional
+    @ExtendWith(SpringExtension.class)
+    @SpringBootTest
     @DisplayName("for user-custom(search) APIs")
     class ForSearchAPIs {
         @Test
