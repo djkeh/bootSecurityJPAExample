@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static com.me.bootSecurityJPAExample.fixture.UserFixture.constructTestUser;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -129,14 +130,4 @@ class SpringDataRestAPITests {
         }
     }
 
-
-    // Stubs
-    private User constructTestUser(String loginId, String password) {
-        return User.builder()
-                .loginId(loginId)
-                .password(password)
-                .createdBy("creator")
-                .updatedBy("creator")
-                .build();
-    }
 }
