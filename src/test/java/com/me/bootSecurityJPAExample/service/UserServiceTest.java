@@ -1,18 +1,15 @@
 package com.me.bootSecurityJPAExample.service;
 
+import com.me.bootSecurityJPAExample.annotation.TransactionalBasicTestAnnotations;
 import com.me.bootSecurityJPAExample.domain.User;
 import com.me.bootSecurityJPAExample.repository.UserRepository;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
@@ -20,9 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 
-@ActiveProfiles("test")
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+@TransactionalBasicTestAnnotations
 @DisplayName("User service logic tests")
 class UserServiceTest {
 
@@ -32,7 +27,7 @@ class UserServiceTest {
 
     @BeforeEach
     void before() {
-        userRepository.deleteAll(); // To remove sample data.
+        userRepository.deleteAll(); // TODO: To remove sample data from classpath:/resources/data.sql. This is to be removed when the sample data is removed.
         userRepository.save(User.builder()
                 .loginId("test")
                 .password("password")
@@ -117,7 +112,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Add a User with a missing field")
+    @DisplayName("(Exception) Add a User with a missing field")
     void addIncompleteUser() {
         // Given
         User user = User.builder()
@@ -136,7 +131,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Add a null value")
+    @DisplayName("(Exception) Add a null value")
     void addNullUser() {
         // Given
 
@@ -150,7 +145,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Add an existing user")
+    @DisplayName("(Exception) Add an existing user")
     void addExistingUser() {
         // Given
         User user = User.builder()

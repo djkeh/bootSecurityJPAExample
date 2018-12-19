@@ -1,22 +1,17 @@
 package com.me.bootSecurityJPAExample;
 
+import com.me.bootSecurityJPAExample.annotation.BasicTestAnnotations;
 import com.me.bootSecurityJPAExample.controller.MainController;
 import com.me.bootSecurityJPAExample.repository.UserRepository;
 import com.me.bootSecurityJPAExample.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@ActiveProfiles("test")
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+@BasicTestAnnotations
 @DisplayName("Boot, Security, JPA example application basic tests")
 class BootSecurityJPAExampleApplicationTests {
 

@@ -1,18 +1,17 @@
 package com.me.bootSecurityJPAExample;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.me.bootSecurityJPAExample.annotation.TransactionalBasicTestAnnotations;
 import com.me.bootSecurityJPAExample.domain.User;
 import com.me.bootSecurityJPAExample.repository.UserRepository;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -24,10 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@ActiveProfiles("test")
-@Transactional
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+@TransactionalBasicTestAnnotations
 @DisplayName("Spring Data Rest API Tests")
 class SpringDataRestAPITests {
 
@@ -50,10 +46,7 @@ class SpringDataRestAPITests {
     }
 
     @Nested
-    @ActiveProfiles("test")
-    @Transactional
-    @ExtendWith(SpringExtension.class)
-    @SpringBootTest
+    @TransactionalBasicTestAnnotations
     @DisplayName("for basic CRUD APIs")
     class ForBasicAPIs {
         @Test
@@ -97,10 +90,7 @@ class SpringDataRestAPITests {
 
 
     @Nested
-    @ActiveProfiles("test")
-    @Transactional
-    @ExtendWith(SpringExtension.class)
-    @SpringBootTest
+    @TransactionalBasicTestAnnotations
     @DisplayName("for user-custom(search) APIs")
     class ForSearchAPIs {
         @Test
