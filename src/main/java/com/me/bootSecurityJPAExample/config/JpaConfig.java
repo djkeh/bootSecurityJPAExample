@@ -22,7 +22,7 @@ public class JpaConfig {
     public AuditorAware<String> auditorAware() {
         return () -> {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            return Optional.ofNullable(auth == null ? null : auth.getName());
+            return Optional.ofNullable(auth).map(Authentication::getName);
         };
     }
 
