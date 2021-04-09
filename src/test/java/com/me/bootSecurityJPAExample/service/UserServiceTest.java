@@ -44,6 +44,13 @@ class UserServiceTest {
 
 
     @Test
+    @DisplayName("[[TEST]]")
+    void test() {
+        userRepository.findByNicknameAndEmailAndDescription("Uno", null, "bla bla bla");
+    }
+
+
+    @Test
     @DisplayName("Get User list containing single User")
     void getList() {
         // Given
