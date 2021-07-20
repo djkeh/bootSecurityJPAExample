@@ -20,6 +20,7 @@ spring:
   thymeleaf:
     cache: false
     decoupled-logic: true
+server.servlet.session.timeout: 1m # embedded tomcat 을 쓴다면 타임아웃 최소 시간이 1분임
 management:
   endpoints:
 #    TODO: Security vulnerable settings. Must be reviewed
