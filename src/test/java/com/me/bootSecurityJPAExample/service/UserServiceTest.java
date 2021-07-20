@@ -113,7 +113,7 @@ class UserServiceTest {
         // Then
         assertThat(thrown)
                 .isInstanceOf(DataIntegrityViolationException.class)
-                .hasStackTraceContaining("LOGIN_ID");
+                .hasStackTraceContaining("loginId");
     }
 
     @Test

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    initialization-mode: embedded
+    url: jdbc:h2:mem:testdb # 이걸 안해주면 in-memory db 이름을 임의로 복잡하게 잡아준다.
   h2:
     console:
       enabled: true
@@ -12,6 +12,7 @@ spring:
     hibernate:
       ddl-auto: create-drop
     properties.hibernate.format_sql: true
+    defer-datasource-initialization: true # as of Boot 2.5: 하이버네이트가 data.sql 로부터 스키마를 생성하게끔 명시하는 프로퍼티
   data:
     rest:
       base-path: /api
@@ -19,6 +20,7 @@ spring:
   thymeleaf:
     cache: false
     decoupled-logic: true
+server.servlet.session.timeout: 1m # embedded tomcat 을 쓴다면 타임아웃 최소 시간이 1분임
 management:
   endpoints:
 #    TODO: Security vulnerable settings. Must be reviewed
