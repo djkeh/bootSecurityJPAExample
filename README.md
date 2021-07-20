@@ -7,8 +7,9 @@
 
 ### 스펙
 
-* Java 8
-* Spring Boot 2
+* Java 16
+* Gradle `7.1.1`
+* Spring Boot `2.5.2`
   * Spring Security
   * Spring Data Jpa
   * Spring Data Rest + HAL Browser
@@ -16,8 +17,8 @@
   * Spring Boot Actuator
   * Thymeleaf
 * H2 Database
-* QueryDSL 4
-* Lombok 1.18.4
+* QueryDSL `4.4.0`
+* Lombok `1.18.20`
 
 ### 목표
 
